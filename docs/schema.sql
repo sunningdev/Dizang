@@ -199,8 +199,13 @@ CREATE TABLE IF NOT EXISTS fo_blessing (
   audit_time    DATETIME                COMMENT '审核时间',
   reject_reason VARCHAR(200)            COMMENT '拒绝原因',
   ip_hash       VARCHAR(64)             COMMENT 'IP哈希，防刷',
+  status        CHAR(1)       DEFAULT '0' COMMENT '0正常 1停用',
+  del_flag      CHAR(1)       DEFAULT '0' COMMENT '0存在 2删除',
+  create_by     VARCHAR(64)   DEFAULT '' COMMENT '创建者',
   create_time   DATETIME               COMMENT '提交时间',
-  del_flag      CHAR(1)       DEFAULT '0'
+  update_by     VARCHAR(64)   DEFAULT '' COMMENT '更新者',
+  update_time   DATETIME                COMMENT '更新时间',
+  remark        VARCHAR(500)  DEFAULT '' COMMENT '备注'
 ) COMMENT='祈福墙';
 
 -- =============================================

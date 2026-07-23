@@ -23,6 +23,13 @@ public class FoTeaching extends BaseEntity {
     @Excel(name = "发布时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date publishTime;
 
+    /** 状态（0正常 1停用） */
+    @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    private String status;
+
+    /** 删除标志（0代表存在 2代表删除） */
+    private String delFlag;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getMasterId() { return masterId; }
@@ -39,4 +46,8 @@ public class FoTeaching extends BaseEntity {
     public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
     public Date getPublishTime() { return publishTime; }
     public void setPublishTime(Date publishTime) { this.publishTime = publishTime; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getDelFlag() { return delFlag; }
+    public void setDelFlag(String delFlag) { this.delFlag = delFlag; }
 }

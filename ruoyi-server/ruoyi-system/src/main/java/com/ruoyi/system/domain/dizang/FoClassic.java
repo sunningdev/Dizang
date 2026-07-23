@@ -17,6 +17,13 @@ public class FoClassic extends BaseEntity {
     @Excel(name = "分类")
     private String category;
 
+    /** 状态（0正常 1停用） */
+    @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    private String status;
+
+    /** 删除标志（0代表存在 2代表删除） */
+    private String delFlag;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     @NotBlank(message = "经典名称不能为空")
@@ -29,4 +36,8 @@ public class FoClassic extends BaseEntity {
     public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getDelFlag() { return delFlag; }
+    public void setDelFlag(String delFlag) { this.delFlag = delFlag; }
 }
