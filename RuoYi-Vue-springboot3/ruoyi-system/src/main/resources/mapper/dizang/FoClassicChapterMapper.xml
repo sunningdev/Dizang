@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.dizang.FoClassicChapterMapper">
+    <resultMap type="com.ruoyi.system.domain.dizang.FoClassicChapter" id="FoClassicChapterResult">
+        <id property="id" column="id"/>
+        <result property="classicId" column="classic_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectVo">select id,classic_id,parent_id,title,content,sort_order,create_by,create_time,update_by,update_time,remark from fo_classic_chapter</sql>
+    <select id="selectFoClassicChapterList" parameterType="com.ruoyi.system.domain.dizang.FoClassicChapter" resultMap="FoClassicChapterResult">
+        <include refid="selectVo"/>
+        <where>
+            <if test="classicId != null">and classic_id=#{classicId}</if>
+            <if test="title != null and title != ''">and title like concat('%',#{title},'%')</if>
+        </where>
+        order by sort_order asc
+    </select>
+    <select id="selectFoClassicChapterById" parameterType="Long" resultMap="FoClassicChapterResult"><include refid="selectVo"/> where id=#{id}</select>
+    <insert id="insertFoClassicChapter" parameterType="com.ruoyi.system.domain.dizang.FoClassicChapter" useGeneratedKeys="true" keyProperty="id">
+        insert into fo_classic_chapter(classic_id,parent_id,title,content,sort_order,create_by,create_time)
+        values(#{classicId},#{parentId},#{title},#{content},#{sortOrder},#{createBy},sysdate())
+    </insert>
+    <update id="updateFoClassicChapter" parameterType="com.ruoyi.system.domain.dizang.FoClassicChapter">
+        update fo_classic_chapter
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="content != null">content=#{content},</if>
+            <if test="sortOrder != null">sort_order=#{sortOrder},</if>
+            update_by=#{updateBy},update_time=sysdate()
+        </set>
+        where id=#{id}
+    </update>
+    <delete id="deleteFoClassicChapterById" parameterType="Long">delete from fo_classic_chapter where id=#{id}</delete>
+    <delete id="deleteFoClassicChapterByIds" parameterType="String">delete from fo_classic_chapter where id in <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.dizang.FoBlessingMapper">
+    <resultMap type="com.ruoyi.system.domain.dizang.FoBlessing" id="FoBlessingResult">
+        <id property="id" column="id"/><result property="nickname" column="nickname"/><result property="content" column="content"/>
+        <result property="likeCount" column="like_count"/><result property="auditStatus" column="audit_status"/>
+        <result property="auditBy" column="audit_by"/><result property="auditTime" column="audit_time"/>
+        <result property="rejectReason" column="reject_reason"/><result property="ipHash" column="ip_hash"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <sql id="selectVo">select id,nickname,content,like_count,audit_status,audit_by,audit_time,reject_reason,ip_hash,create_time from fo_blessing</sql>
+    <select id="selectFoBlessingList" parameterType="com.ruoyi.system.domain.dizang.FoBlessing" resultMap="FoBlessingResult">
+        <include refid="selectVo"/>
+        <where>
+            <if test="nickname != null and nickname != ''">and nickname like concat('%',#{nickname},'%')</if>
+            <if test="content != null and content != ''">and content like concat('%',#{content},'%')</if>
+            <if test="auditStatus != null">and audit_status=#{auditStatus}</if>
+            <if test="params.beginTime != null and params.beginTime != ''">and date_format(create_time,'%Y%m%d') >= date_format(#{params.beginTime},'%Y%m%d')</if>
+            <if test="params.endTime != null and params.endTime != ''">and date_format(create_time,'%Y%m%d') <= date_format(#{params.endTime},'%Y%m%d')</if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="selectFoBlessingById" parameterType="Long" resultMap="FoBlessingResult"><include refid="selectVo"/> where id=#{id}</select>
+    <delete id="deleteFoBlessingById" parameterType="Long">delete from fo_blessing where id=#{id}</delete>
+    <delete id="deleteFoBlessingByIds" parameterType="String">delete from fo_blessing where id in <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+    <update id="updateFoBlessing" parameterType="com.ruoyi.system.domain.dizang.FoBlessing">
+        update fo_blessing <set><if test="auditStatus != null">audit_status=#{auditStatus},</if><if test="auditBy != null">audit_by=#{auditBy},</if><if test="auditTime != null">audit_time=#{auditTime},</if><if test="rejectReason != null">reject_reason=#{rejectReason},</if></set> where id=#{id}
+    </update>
+</mapper>

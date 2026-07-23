@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.dizang.FoArticleMapper">
+    <resultMap type="com.ruoyi.system.domain.dizang.FoArticle" id="FoArticleResult">
+        <id property="id" column="id"/><result property="topicId" column="topic_id"/><result property="title" column="title"/>
+        <result property="summary" column="summary"/><result property="content" column="content"/><result property="coverUrl" column="cover_url"/>
+        <result property="type" column="type"/><result property="publishTime" column="publish_time"/>
+        <result property="createBy" column="create_by"/><result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/><result property="updateTime" column="update_time"/><result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectVo">select id,topic_id,title,summary,content,cover_url,type,publish_time,create_by,create_time,update_by,update_time,remark from fo_article</sql>
+    <select id="selectFoArticleList" parameterType="com.ruoyi.system.domain.dizang.FoArticle" resultMap="FoArticleResult">
+        <include refid="selectVo"/><where><if test="topicId != null">and topic_id=#{topicId}</if><if test="title != null and title != ''">and title like concat('%',#{title},'%')</if></where>order by publish_time desc
+    </select>
+    <select id="selectFoArticleById" parameterType="Long" resultMap="FoArticleResult"><include refid="selectVo"/> where id=#{id}</select>
+    <insert id="insertFoArticle" parameterType="com.ruoyi.system.domain.dizang.FoArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into fo_article(topic_id,title,summary,content,cover_url,type,publish_time,create_by,create_time) values(#{topicId},#{title},#{summary},#{content},#{coverUrl},#{type},#{publishTime},#{createBy},sysdate())
+    </insert>
+    <update id="updateFoArticle" parameterType="com.ruoyi.system.domain.dizang.FoArticle">
+        update fo_article <set><if test="title != null">title=#{title},</if><if test="summary != null">summary=#{summary},</if><if test="content != null">content=#{content},</if><if test="coverUrl != null">cover_url=#{coverUrl},</if><if test="publishTime != null">publish_time=#{publishTime},</if>update_by=#{updateBy},update_time=sysdate()</set> where id=#{id}
+    </update>
+    <delete id="deleteFoArticleById" parameterType="Long">delete from fo_article where id=#{id}</delete>
+    <delete id="deleteFoArticleByIds" parameterType="String">delete from fo_article where id in <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

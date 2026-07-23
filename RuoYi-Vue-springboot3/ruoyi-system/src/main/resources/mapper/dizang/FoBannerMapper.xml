@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.dizang.FoBannerMapper">
+    <resultMap type="com.ruoyi.system.domain.dizang.FoBanner" id="FoBannerResult">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="linkUrl" column="link_url"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectVo">select id,title,image_url,link_url,sort_order,create_by,create_time,update_by,update_time,remark from fo_banner</sql>
+
+    <select id="selectFoBannerList" parameterType="com.ruoyi.system.domain.dizang.FoBanner" resultMap="FoBannerResult">
+        <include refid="selectVo"/>
+        <where>
+            <if test="title != null and title != ''">and title like concat('%',#{title},'%')</if>
+        </where>
+        order by sort_order asc
+    </select>
+
+    <select id="selectFoBannerById" parameterType="Long" resultMap="FoBannerResult">
+        <include refid="selectVo"/> where id = #{id}
+    </select>
+
+    <insert id="insertFoBanner" parameterType="com.ruoyi.system.domain.dizang.FoBanner" useGeneratedKeys="true" keyProperty="id">
+        insert into fo_banner(title,image_url,link_url,sort_order,create_by,create_time)
+        values(#{title},#{imageUrl},#{linkUrl},#{sortOrder},#{createBy},sysdate())
+    </insert>
+
+    <update id="updateFoBanner" parameterType="com.ruoyi.system.domain.dizang.FoBanner">
+        update fo_banner
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="imageUrl != null">image_url=#{imageUrl},</if>
+            <if test="linkUrl != null">link_url=#{linkUrl},</if>
+            <if test="sortOrder != null">sort_order=#{sortOrder},</if>
+            update_by=#{updateBy},update_time=sysdate()
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteFoBannerById" parameterType="Long">delete from fo_banner where id=#{id}</delete>
+    <delete id="deleteFoBannerByIds" parameterType="String">
+        delete from fo_banner where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </delete>
+</mapper>

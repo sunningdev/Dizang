@@ -1,0 +1,35 @@
+﻿package com.ruoyi.system.domain.dizang;
+
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class FoKnowledge extends BaseEntity {
+    private static final long serialVersionUID = 1L;
+
+    @Excel(name = "ID")
+    private Long id;
+    @Excel(name = "分类ID")
+    private Long categoryId;
+    @Excel(name = "标题")
+    private String title;
+    private String summary;
+    private String content;
+    private String coverUrl;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getCategoryId() { return categoryId; }
+    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
+    @NotBlank(message = "标题不能为空")
+    @Size(min = 0, max = 300, message = "标题不超过300个字符")
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getSummary() { return summary; }
+    public void setSummary(String summary) { this.summary = summary; }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+    public String getCoverUrl() { return coverUrl; }
+    public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
+}

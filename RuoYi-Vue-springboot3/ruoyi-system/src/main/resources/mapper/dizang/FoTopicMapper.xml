@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.dizang.FoTopicMapper">
+    <resultMap type="com.ruoyi.system.domain.dizang.FoTopic" id="FoTopicResult">
+        <id property="id" column="id"/><result property="name" column="name"/><result property="icon" column="icon"/>
+        <result property="description" column="description"/><result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/><result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/><result property="updateTime" column="update_time"/><result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectVo">select id,name,icon,description,sort_order,create_by,create_time,update_by,update_time,remark from fo_topic</sql>
+    <select id="selectFoTopicList" parameterType="com.ruoyi.system.domain.dizang.FoTopic" resultMap="FoTopicResult">
+        <include refid="selectVo"/><where><if test="name != null and name != ''">and name like concat('%',#{name},'%')</if></where>order by sort_order
+    </select>
+    <select id="selectFoTopicById" parameterType="Long" resultMap="FoTopicResult"><include refid="selectVo"/> where id=#{id}</select>
+    <insert id="insertFoTopic" parameterType="com.ruoyi.system.domain.dizang.FoTopic" useGeneratedKeys="true" keyProperty="id">
+        insert into fo_topic(name,icon,description,sort_order,create_by,create_time) values(#{name},#{icon},#{description},#{sortOrder},#{createBy},sysdate())
+    </insert>
+    <update id="updateFoTopic" parameterType="com.ruoyi.system.domain.dizang.FoTopic">
+        update fo_topic <set><if test="name != null">name=#{name},</if><if test="icon != null">icon=#{icon},</if><if test="description != null">description=#{description},</if><if test="sortOrder != null">sort_order=#{sortOrder},</if>update_by=#{updateBy},update_time=sysdate()</set> where id=#{id}
+    </update>
+    <delete id="deleteFoTopicById" parameterType="Long">delete from fo_topic where id=#{id}</delete>
+    <delete id="deleteFoTopicByIds" parameterType="String">delete from fo_topic where id in <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>
