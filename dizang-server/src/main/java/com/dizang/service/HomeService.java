@@ -1,4 +1,4 @@
-﻿package com.dizang.service;
+package com.dizang.service;
 
 import com.dizang.entity.Banner;
 import com.dizang.entity.Teaching;

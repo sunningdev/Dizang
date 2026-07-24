@@ -1,4 +1,4 @@
-﻿package com.dizang.common;
+package com.dizang.common;
 
 import lombok.Data;
 import java.io.Serializable;

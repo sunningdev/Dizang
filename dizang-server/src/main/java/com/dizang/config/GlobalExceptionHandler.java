@@ -1,4 +1,4 @@
-﻿package com.dizang.config;
+package com.dizang.config;
 
 import com.dizang.common.R;
 import lombok.extern.slf4j.Slf4j;

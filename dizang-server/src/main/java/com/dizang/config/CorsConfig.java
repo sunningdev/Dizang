@@ -1,4 +1,4 @@
-﻿package com.dizang.config;
+package com.dizang.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

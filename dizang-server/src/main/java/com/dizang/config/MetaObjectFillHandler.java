@@ -1,4 +1,4 @@
-﻿package com.dizang.config;
+package com.dizang.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

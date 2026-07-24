@@ -1,4 +1,4 @@
-﻿package com.dizang.controller;
+package com.dizang.controller;
 
 import com.dizang.common.PageResult;
 import com.dizang.common.R;

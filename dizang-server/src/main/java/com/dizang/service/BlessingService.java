@@ -1,4 +1,4 @@
-﻿package com.dizang.service;
+package com.dizang.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizang.entity.Blessing;

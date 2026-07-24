@@ -1,4 +1,4 @@
-﻿package com.dizang.mapper;
+package com.dizang.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dizang.entity.ClassicChapter;

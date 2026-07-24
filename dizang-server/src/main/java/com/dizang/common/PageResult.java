@@ -1,4 +1,4 @@
-﻿package com.dizang.common;
+package com.dizang.common;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;

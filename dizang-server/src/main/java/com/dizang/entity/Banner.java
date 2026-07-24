@@ -1,4 +1,4 @@
-﻿package com.dizang.entity;
+package com.dizang.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

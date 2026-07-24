@@ -1,4 +1,4 @@
-﻿package com.dizang;
+package com.dizang;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

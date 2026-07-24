@@ -1,4 +1,4 @@
-﻿package com.dizang.controller;
+package com.dizang.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
