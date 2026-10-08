@@ -1,15 +1,1274 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="学佛网站 - 佛学经典、大德开示、专题、梵音、祈福墙" />
-    <meta name="keywords" content="佛学,佛教,学佛,念佛,祈福" />
-    <title>学佛网</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>净心 · 学佛导航</title>
+    <!-- 引入 Google Font 思源宋体 & 图标库 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== CSS 变量 ===== */
+        :root {
+            --gold: #C9A96E;
+            --gold-light: #E8D5B7;
+            --gold-pale: #F5EDE0;
+            --gold-dark: #A8894A;
+            --bg-cream: #FBF8F0;
+            --text-dark: #2D1F14;
+            --text-soft: #5A4A3A;
+            --shadow: 0 8px 30px rgba(180, 150, 100, 0.15);
+            --shadow-hover: 0 12px 40px rgba(180, 150, 100, 0.25);
+            --radius: 16px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-serif: 'Noto Serif SC', '华文楷体', 'KaiTi', 'Georgia', serif;
+            --font-sans: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        /* ===== 重置 & 基础 ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-serif);
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== 容器 ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== 顶部装饰线 ===== */
+        .top-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark));
+            width: 100%;
+        }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(251, 248, 240, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: var(--gold-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo i {
+            font-size: 1.4rem;
+            color: var(--gold);
+        }
+        .logo span {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            letter-spacing: 2px;
+            margin-left: 4px;
+        }
+
+        /* 桌面导航 */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            align-items: center;
+        }
+        .nav-links li a {
+            padding: 6px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-soft);
+            border-radius: 40px;
+            transition: var(--transition);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: var(--gold-dark);
+            background: rgba(201, 169, 110, 0.12);
+        }
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        .nav-links li a:hover::after,
+        .nav-links li a.active::after {
+            width: 30%;
+        }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text-dark);
+            border-radius: 2px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== Hero 区域 ===== */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '◇';
+            font-size: 3rem;
+            color: var(--gold-light);
+            display: block;
+            opacity: 0.5;
+            margin-bottom: 8px;
+            letter-spacing: 12px;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--text-dark);
+            letter-spacing: 8px;
+            line-height: 1.2;
+        }
+        .hero h1 small {
+            display: block;
+            font-size: clamp(0.9rem, 2vw, 1.3rem);
+            font-weight: 400;
+            color: var(--text-soft);
+            letter-spacing: 6px;
+            margin-top: 8px;
+        }
+        .hero .sub {
+            margin-top: 20px;
+            font-size: 1.05rem;
+            color: var(--text-soft);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 2px;
+            border-top: 1px solid var(--gold-light);
+            padding-top: 20px;
+            display: inline-block;
+        }
+
+        /* ===== 通用 Section ===== */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+        .section-header .en {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--gold-dark);
+            font-weight: 400;
+            opacity: 0.6;
+        }
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--text-dark);
+            margin-top: 4px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .section-header p {
+            margin-top: 16px;
+            color: var(--text-soft);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        /* ===== 佛学经典 ===== */
+        .classic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 28px;
+        }
+        .classic-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px 22px 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .classic-card::before {
+            content: '📜';
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            font-size: 2rem;
+            opacity: 0.08;
+        }
+        .classic-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        .classic-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            letter-spacing: 2px;
+        }
+        .classic-card .meta {
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            margin: 6px 0 10px;
+            opacity: 0.7;
+        }
+        .classic-card p {
+            font-size: 0.95rem;
+            color: var(--text-soft);
+            line-height: 1.8;
+        }
+        .classic-card .tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.75rem;
+            padding: 2px 14px;
+            border-radius: 20px;
+            background: var(--gold-pale);
+            color: var(--gold-dark);
+            letter-spacing: 1px;
+        }
+
+        /* ===== 大德开示 ===== */
+        .teaching-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .teaching-item {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 24px 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(201, 169, 110, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 12px 20px;
+        }
+        .teaching-item:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold-light);
+        }
+        .teaching-item .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--gold-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--gold-dark);
+            flex-shrink: 0;
+        }
+        .teaching-item .body {
+            flex: 1;
+            min-width: 200px;
+        }
+        .teaching-item .body h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+        }
+        .teaching-item .body h4 small {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            margin-left: 12px;
+            opacity: 0.7;
+        }
+        .teaching-item .body p {
+            color: var(--text-soft);
+            font-size: 0.95rem;
+            margin-top: 4px;
+            line-height: 1.8;
+        }
+        .teaching-item .body .date {
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            opacity: 0.6;
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* ===== 专题 ===== */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+        }
+        .topic-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px 16px 22px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(201, 169, 110, 0.08);
+            cursor: default;
+        }
+        .topic-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold);
+        }
+        .topic-card .icon {
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .topic-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 2px;
+        }
+        .topic-card p {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            margin-top: 6px;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+
+        /* ===== 佛教知识 ===== */
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 28px;
+        }
+        .knowledge-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 3px solid var(--gold-light);
+        }
+        .knowledge-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-top-color: var(--gold);
+        }
+        .knowledge-card .icon {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .knowledge-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+        }
+        .knowledge-card p {
+            font-size: 0.92rem;
+            color: var(--text-soft);
+            margin-top: 6px;
+            line-height: 1.8;
+        }
+
+        /* ===== 梵音 ===== */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+        .music-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid rgba(201, 169, 110, 0.08);
+        }
+        .music-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold-light);
+            transform: translateY(-4px);
+        }
+        .music-card .icon {
+            font-size: 2.8rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 8px;
+        }
+        .music-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+        }
+        .music-card .artist {
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            opacity: 0.7;
+        }
+        .music-card .btn-play {
+            margin-top: 12px;
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 40px;
+            border: 1px solid var(--gold);
+            color: var(--gold-dark);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            background: transparent;
+            font-family: var(--font-serif);
+        }
+        .music-card .btn-play:hover {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        /* ===== 祈福墙 ===== */
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .prayer-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 24px 22px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(201, 169, 110, 0.06);
+            position: relative;
+        }
+        .prayer-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .prayer-card .quote {
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .prayer-card p {
+            font-size: 0.95rem;
+            color: var(--text-soft);
+            line-height: 1.8;
+            font-style: italic;
+        }
+        .prayer-card .name {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .prayer-card .name i {
+            font-size: 0.7rem;
+            color: var(--gold-light);
+        }
+        .prayer-card .time {
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            opacity: 0.5;
+            margin-top: 4px;
+        }
+
+        /* ===== 祈福墙 - 添加祈福 ===== */
+        .prayer-form-wrap {
+            margin-top: 40px;
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(201, 169, 110, 0.1);
+        }
+        .prayer-form-wrap h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .prayer-form-wrap h4 i {
+            color: var(--gold);
+        }
+        .prayer-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .prayer-form input,
+        .prayer-form textarea {
+            font-family: var(--font-serif);
+            padding: 12px 18px;
+            border: 1px solid #e8ddd0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: var(--bg-cream);
+            transition: var(--transition);
+            color: var(--text-dark);
+            outline: none;
+        }
+        .prayer-form input:focus,
+        .prayer-form textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.15);
+        }
+        .prayer-form input {
+            flex: 1 1 160px;
+        }
+        .prayer-form textarea {
+            flex: 1 1 100%;
+            min-height: 70px;
+            resize: vertical;
+        }
+        .prayer-form button {
+            padding: 12px 36px;
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-serif);
+        }
+        .prayer-form button:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 169, 110, 0.3);
+        }
+
+        /* ===== 底部 ===== */
+        .footer {
+            background: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 40px 0 28px;
+            margin-top: 20px;
+        }
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+        .footer .copy {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .footer .copy i {
+            color: var(--gold-light);
+            margin: 0 4px;
+        }
+        .footer .links {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+        }
+        .footer .links a {
+            transition: var(--transition);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .footer .links a:hover {
+            color: var(--gold-light);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .topic-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 导航 */
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(251, 248, 240, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 20px 24px 28px;
+                gap: 4px;
+                border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+                transform: scaleY(0);
+                transform-origin: top center;
+                opacity: 0;
+                transition: var(--transition);
+                pointer-events: none;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            }
+            .nav-links.open {
+                transform: scaleY(1);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .nav-links li a {
+                padding: 10px 16px;
+                font-size: 1rem;
+                width: 100%;
+                text-align: center;
+                border-radius: 10px;
+            }
+            .nav-links li a::after {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+            .logo span {
+                font-size: 0.7rem;
+            }
+
+            /* hero */
+            .hero {
+                padding: 40px 0 28px;
+            }
+            .hero h1 {
+                letter-spacing: 4px;
+            }
+
+            /* section */
+            section {
+                padding: 44px 0;
+            }
+            .section-header {
+                margin-bottom: 32px;
+            }
+
+            /* 卡片调整 */
+            .classic-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .topic-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+            }
+            .knowledge-grid {
+                grid-template-columns: 1fr;
+            }
+            .music-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .prayer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .teaching-item {
+                padding: 18px 20px;
+                flex-direction: column;
+            }
+            .teaching-item .avatar {
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
+            }
+            .teaching-item .body h4 small {
+                display: block;
+                margin-left: 0;
+                margin-top: 2px;
+            }
+
+            .prayer-form-wrap {
+                padding: 24px 18px;
+            }
+            .prayer-form input {
+                flex: 1 1 100%;
+            }
+            .prayer-form button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            .classic-grid {
+                grid-template-columns: 1fr;
+            }
+            .topic-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .music-grid {
+                grid-template-columns: 1fr;
+            }
+            .prayer-grid {
+                grid-template-columns: 1fr;
+            }
+            .topic-card {
+                padding: 20px 12px 16px;
+            }
+            .topic-card .icon {
+                font-size: 1.8rem;
+            }
+            .topic-card h4 {
+                font-size: 0.9rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* ===== 工具 ===== */
+        .text-gold {
+            color: var(--gold);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+
+        /* ===== 滚动条美化 ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-cream);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-light);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部装饰线 -->
+    <div class="top-bar"></div>
+
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-om"></i> 净心
+                <span>· 学佛导航</span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#classics" class="active">佛学经典</a></li>
+                <li><a href="#teachings">大德开示</a></li>
+                <li><a href="#topics">专题</a></li>
+                <li><a href="#knowledge">佛教知识</a></li>
+                <li><a href="#music">梵音</a></li>
+                <li><a href="#prayer">祈福墙</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+        <div class="container">
+            <h1>
+                般若为导 净土为归
+                <small>— 正信 · 正行 · 正觉 —</small>
+            </h1>
+            <div class="sub">深入经藏 智慧如海 · 愿一切众生 共证菩提</div>
+        </div>
+    </header>
+
+    <!-- ===== 1. 佛学经典 ===== -->
+    <section id="classics">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Sūtra —</div>
+                <h2>佛学经典</h2>
+                <p>依了义经，不依不了义经。深入经藏，智慧如海。</p>
+            </div>
+            <div class="classic-grid">
+                <div class="classic-card">
+                    <h3>《般若波罗蜜多心经》</h3>
+                    <div class="meta">唐三藏 · 玄奘 译</div>
+                    <p>色不异空，空不异色，色即是空，空即是色……</p>
+                    <span class="tag">般若部</span>
+                </div>
+                <div class="classic-card">
+                    <h3>《金刚般若波罗蜜经》</h3>
+                    <div class="meta">姚秦 · 鸠摩罗什 译</div>
+                    <p>凡所有相，皆是虚妄。若见诸相非相，即见如来。</p>
+                    <span class="tag">般若部</span>
+                </div>
+                <div class="classic-card">
+                    <h3>《妙法莲华经》</h3>
+                    <div class="meta">姚秦 · 鸠摩罗什 译</div>
+                    <p>诸佛世尊，唯以一大事因缘故出现于世……</p>
+                    <span class="tag">法华部</span>
+                </div>
+                <div class="classic-card">
+                    <h3>《佛说阿弥陀经》</h3>
+                    <div class="meta">姚秦 · 鸠摩罗什 译</div>
+                    <p>从是西方，过十万亿佛土，有世界名曰极乐……</p>
+                    <span class="tag">净土部</span>
+                </div>
+                <div class="classic-card">
+                    <h3>《大佛顶首楞严经》</h3>
+                    <div class="meta">唐 · 般剌密帝 译</div>
+                    <p>狂心顿歇，歇即菩提。胜净明心，本周法界。</p>
+                    <span class="tag">经集部</span>
+                </div>
+                <div class="classic-card">
+                    <h3>《六祖坛经》</h3>
+                    <div class="meta">唐 · 法海 集录</div>
+                    <p>菩提自性，本来清净。但用此心，直了成佛。</p>
+                    <span class="tag">祖师著作</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 2. 大德开示 ===== -->
+    <section id="teachings" style="background: rgba(245, 237, 224, 0.3);">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Teachings —</div>
+                <h2>大德开示</h2>
+                <p>依止善知识，听闻正法，如理作意，法随法行。</p>
+            </div>
+            <div class="teaching-list">
+                <div class="teaching-item">
+                    <div class="avatar">🙏</div>
+                    <div class="body">
+                        <h4>净空法师 <small>净土宗</small></h4>
+                        <p>「念佛是最稳当的修行方法。一句阿弥陀佛，能消八十亿劫生死重罪。但能老实念佛，莫换题目，自然暗合道妙。」</p>
+                        <span class="date">2026年7月24日</span>
+                    </div>
+                </div>
+                <div class="teaching-item">
+                    <div class="avatar">🧘</div>
+                    <div class="body">
+                        <h4>虚云老和尚 <small>禅宗</small></h4>
+                        <p>「参禅不是玄妙，贵在明心见性。但能万缘放下，一念不生，自有相应之时。所谓：狂心不歇，歇即菩提。」</p>
+                        <span class="date">2026年7月22日</span>
+                    </div>
+                </div>
+                <div class="teaching-item">
+                    <div class="avatar">📿</div>
+                    <div class="body">
+                        <h4>印光大师 <small>净土宗</small></h4>
+                        <p>「敦伦尽分，闲邪存诚，诸恶莫作，众善奉行。真为生死，发菩提心，以深信愿，持佛名号。」</p>
+                        <span class="date">2026年7月20日</span>
+                    </div>
+                </div>
+                <div class="teaching-item">
+                    <div class="avatar">🌸</div>
+                    <div class="body">
+                        <h4>星云大师 <small>人间佛教</small></h4>
+                        <p>「给人信心，给人欢喜，给人希望，给人方便。学佛不是要你远离生活，而是要你更好地生活。」</p>
+                        <span class="date">2026年7月18日</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 3. 专题 ===== -->
+    <section id="topics">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Topics —</div>
+                <h2>专题</h2>
+                <p>一门深入，长时熏修。从基础到究竟，次第修行。</p>
+            </div>
+            <div class="topic-grid">
+                <div class="topic-card">
+                    <span class="icon">🙏</span>
+                    <h4>精进念佛</h4>
+                    <p>都摄六根，净念相继</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🧘</span>
+                    <h4>深信因果</h4>
+                    <p>种善因得善果，种恶因得恶果</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🕊️</span>
+                    <h4>戒杀放生</h4>
+                    <p>慈悲护生，长养善根</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🔥</span>
+                    <h4>消除业障</h4>
+                    <p>忏悔罪业，清净身心</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">☯️</span>
+                    <h4>禅定</h4>
+                    <p>制心一处，无事不办</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🌀</span>
+                    <h4>贪嗔痴慢疑</h4>
+                    <p>五毒烦恼，当勤对治</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🥬</span>
+                    <h4>素食</h4>
+                    <p>慈悲饮食，长养悲心</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">🌈</span>
+                    <h4>往生西方</h4>
+                    <p>信愿持名，求生净土</p>
+                </div>
+                <div class="topic-card">
+                    <span class="icon">⭐</span>
+                    <h4>积德改命</h4>
+                    <p>诸恶莫作，众善奉行</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. 佛教知识 ===== -->
+    <section id="knowledge" style="background: rgba(245, 237, 224, 0.3);">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Knowledge —</div>
+                <h2>佛教知识</h2>
+                <p>正知正见，破迷开悟。认识佛教，从基础开始。</p>
+            </div>
+            <div class="knowledge-grid">
+                <div class="knowledge-card">
+                    <span class="icon">📿</span>
+                    <h4>三宝 · 佛法僧</h4>
+                    <p>佛是觉者，法是真理，僧是清净和合众。皈依三宝，是学佛的入门。</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="icon">🌀</span>
+                    <h4>四圣谛</h4>
+                    <p>苦、集、灭、道。知苦、断集、慕灭、修道，是佛法根本教义。</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="icon">🛤️</span>
+                    <h4>八正道</h4>
+                    <p>正见、正思维、正语、正业、正命、正精进、正念、正定。中道之行。</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="icon">🌸</span>
+                    <h4>六度波罗蜜</h4>
+                    <p>布施、持戒、忍辱、精进、禅定、般若。菩萨自利利他的修行法门。</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="icon">☸️</span>
+                    <h4>十二因缘</h4>
+                    <p>无明缘行，行缘识，识缘名色…… 揭示生命流转的真相。</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="icon">🕊️</span>
+                    <h4>五戒十善</h4>
+                    <p>不杀生、不偷盗、不邪淫、不妄语、不饮酒。人天福报之基础。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. 梵音 ===== -->
+    <section id="music">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Bhajan —</div>
+                <h2>梵音</h2>
+                <p>梵音海潮音，胜彼世间音。以音声做佛事，令众生得清净。</p>
+            </div>
+            <div class="music-grid">
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>大悲咒</h4>
+                    <div class="artist">梵呗 · 观音菩萨</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：大悲咒')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>心经梵唱</h4>
+                    <div class="artist">黄慧音 · 梵音</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：心经梵唱')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>六字大明咒</h4>
+                    <div class="artist">嗡嘛呢叭咪吽</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：六字大明咒')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>阿弥陀佛圣号</h4>
+                    <div class="artist">净宗 · 念佛</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：阿弥陀佛圣号')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>炉香赞</h4>
+                    <div class="artist">寺院梵呗</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：炉香赞')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+                <div class="music-card">
+                    <span class="icon">🎵</span>
+                    <h4>清净法身佛</h4>
+                    <div class="artist">禅乐 · 空灵</div>
+                    <button class="btn-play" onclick="alert('🎶 播放：清净法身佛')"><i class="fas fa-play"></i> 聆听</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 6. 祈福墙 ===== -->
+    <section id="prayer" style="background: rgba(245, 237, 224, 0.3);">
+        <div class="container">
+            <div class="section-header">
+                <div class="en">— Prayer Wall —</div>
+                <h2>祈福墙</h2>
+                <p>愿一切众生，离苦得乐，究竟解脱。写下您的祈愿，共结善缘。</p>
+            </div>
+            <div class="prayer-grid">
+                <div class="prayer-card">
+                    <div class="quote">「</div>
+                    <p>愿世界和平，众生安乐，正法久住，佛日增辉。</p>
+                    <div class="name"><i class="fas fa-leaf"></i> 净心居士</div>
+                    <div class="time">2026-07-24</div>
+                </div>
+                <div class="prayer-card">
+                    <div class="quote">「</div>
+                    <p>愿父母健康长寿，愿一切如母有情皆得解脱。</p>
+                    <div class="name"><i class="fas fa-leaf"></i> 妙音</div>
+                    <div class="time">2026-07-23</div>
+                </div>
+                <div class="prayer-card">
+                    <div class="quote">「</div>
+                    <p>愿我及一切众生，常得善知识摄受，速证无上菩提。</p>
+                    <div class="name"><i class="fas fa-leaf"></i> 慧觉</div>
+                    <div class="time">2026-07-22</div>
+                </div>
+                <div class="prayer-card">
+                    <div class="quote">「</div>
+                    <p>愿疫情早息，国泰民安，风调雨顺，五谷丰登。</p>
+                    <div class="name"><i class="fas fa-leaf"></i> 普明</div>
+                    <div class="time">2026-07-21</div>
+                </div>
+            </div>
+
+            <!-- 添加祈福 -->
+            <div class="prayer-form-wrap">
+                <h4><i class="fas fa-pen-fancy"></i> 写下您的祈愿</h4>
+                <form class="prayer-form" id="prayerForm" onsubmit="event.preventDefault(); alert('🙏 感恩您的祈愿，愿一切善愿皆成就！'); this.reset();">
+                    <input type="text" placeholder="您的法名或昵称" required />
+                    <textarea placeholder="写下您的祈愿内容……" required></textarea>
+                    <button type="submit"><i class="fas fa-heart" style="margin-right: 8px;"></i> 发送祈愿</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 底部 ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="copy">
+                <i class="fas fa-om"></i> 净心 · 学佛导航 &nbsp;|&nbsp; 愿一切众生 共成佛道
+            </div>
+            <div class="links">
+                <a href="#classics">经典</a>
+                <a href="#teachings">开示</a>
+                <a href="#topics">专题</a>
+                <a href="#knowledge">知识</a>
+                <a href="#music">梵音</a>
+                <a href="#prayer">祈福</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // 汉堡菜单
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+                navLinks.classList.toggle('open');
+            });
+
+            // 点击导航链接后关闭菜单（移动端）
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            // 点击页面其他区域关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                }
+            });
+
+            // 滚动时高亮当前导航项
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = navLinks.querySelectorAll('a');
+
+            function updateActiveNav() {
+                let currentId = '';
+                const scrollY = window.scrollY + 120;
+
+                sections.forEach(section => {
+                    const top = section.offsetTop;
+                    const height = section.offsetHeight;
+                    if (scrollY >= top && scrollY < top + height) {
+                        currentId = section.id;
+                    }
+                });
+
+                navItems.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveNav, { passive: true });
+            window.addEventListener('load', updateActiveNav);
+
+            // 为祈福按钮添加简单的交互反馈
+            const prayerBtns = document.querySelectorAll('.btn-play');
+            prayerBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // 已有 onclick，保留
+                });
+            });
+
+        })();
+    </script>
+
+</body>
 </html>

@@ -111,6 +111,7 @@ export interface Blessing {
 export interface HomeData {
   banners: Banner[]
   topics: Topic[]
+  latestClassics: Classic[]
   latestTeachings: Teaching[]
   latestArticles: Article[]
 }

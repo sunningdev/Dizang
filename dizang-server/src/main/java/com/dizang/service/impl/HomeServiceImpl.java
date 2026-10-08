@@ -3,9 +3,11 @@ package com.dizang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dizang.common.TeachingEnricher;
 import com.dizang.entity.Banner;
+import com.dizang.entity.Classic;
 import com.dizang.entity.Teaching;
 import com.dizang.entity.Topic;
 import com.dizang.mapper.BannerMapper;
+import com.dizang.mapper.ClassicMapper;
 import com.dizang.mapper.TeachingMapper;
 import com.dizang.mapper.TopicMapper;
 import com.dizang.service.HomeService;
@@ -22,6 +24,7 @@ public class HomeServiceImpl implements HomeService {
     private final BannerMapper bannerMapper;
     private final TopicMapper topicMapper;
     private final TeachingMapper teachingMapper;
+    private final ClassicMapper classicMapper;
     private final TeachingEnricher teachingEnricher;
 
     @Override
@@ -42,18 +45,27 @@ public class HomeServiceImpl implements HomeService {
                 .orderByAsc(Topic::getSortOrder)
         );
 
+        List<Classic> latestClassics = classicMapper.selectList(
+            new LambdaQueryWrapper<Classic>()
+                .eq(Classic::getStatus, "0")
+                .eq(Classic::getDelFlag, "0")
+                .orderByDesc(Classic::getCreateTime)
+                .last("LIMIT 8")
+        );
+
         List<Teaching> latestTeachings = teachingMapper.selectList(
             new LambdaQueryWrapper<Teaching>()
                 .eq(Teaching::getStatus, "0")
                 .eq(Teaching::getDelFlag, "0")
                 .orderByDesc(Teaching::getPublishTime)
-                .last("LIMIT 5")
+                .last("LIMIT 6")
         );
 
         teachingEnricher.fillMasterName(latestTeachings);
 
         data.put("banners", banners);
         data.put("topics", topics);
+        data.put("latestClassics", latestClassics);
         data.put("latestTeachings", latestTeachings);
         return data;
     }

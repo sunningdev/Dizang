@@ -26,19 +26,41 @@
       </div>
     </div>
 
+    <div class="section" v-if="homeData?.latestClassics?.length">
+      <div class="section-header">
+        <h3>佛学经典</h3>
+        <span @click="$router.push('/classics')">更多 ›</span>
+      </div>
+      <div class="classic-grid">
+        <div class="classic-block" v-for="item in displayedClassics" :key="item.id" @click="$router.push(`/classics/${item.id}`)">
+          <div class="classic-cover">
+            <img v-if="item.coverUrl" :src="item.coverUrl" />
+            <div v-else class="classic-cover-placeholder">📖</div>
+          </div>
+          <p class="classic-title">{{ item.title }}</p>
+        </div>
+      </div>
+      <div class="more-btn" v-if="classicsLimit < homeData.latestClassics.length" @click="loadMoreClassics">
+        更多 ↓
+      </div>
+    </div>
+
     <div class="section" v-if="homeData?.latestTeachings?.length">
       <div class="section-header">
-        <h3>最新开示</h3>
+        <h3>大德开示</h3>
         <span @click="$router.push('/teachings')">更多 ›</span>
       </div>
       <div class="card-list">
-        <div class="card" v-for="item in homeData.latestTeachings" :key="item.id" @click="$router.push(`/teachings/${item.id}`)">
+        <div class="card" v-for="item in displayedTeachings" :key="item.id" @click="$router.push(`/teachings/${item.id}`)">
           <img v-if="item.coverUrl" :src="item.coverUrl" class="card-cover" />
           <div class="card-body">
             <h4>{{ item.title }}</h4>
             <p>{{ item.masterName }} · {{ formatDate(item.publishTime) }}</p>
           </div>
         </div>
+      </div>
+      <div class="more-btn" v-if="homeData.latestTeachings.length > 3 && !teachingsExpanded" @click="teachingsExpanded = true">
+        更多 ↓
       </div>
     </div>
 
@@ -49,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Swipe as VanSwipe, SwipeItem as VanSwipeItem, Icon as VanIcon } from 'vant'
 import { homeApi } from '@/api'
@@ -57,6 +79,22 @@ import type { HomeData } from '@/types'
 
 const router = useRouter()
 const homeData = ref<HomeData>()
+const classicsLimit = ref(4)
+const teachingsExpanded = ref(false)
+
+const displayedClassics = computed(() => {
+  const data = homeData.value?.latestClassics || []
+  return data.slice(0, classicsLimit.value)
+})
+
+const loadMoreClassics = () => {
+  classicsLimit.value += 4
+}
+
+const displayedTeachings = computed(() => {
+  const data = homeData.value?.latestTeachings || []
+  return teachingsExpanded.value ? data : data.slice(0, 3)
+})
 
 const modules = [
   { name: '佛学经典', icon: '📖', path: '/classics' },
@@ -161,6 +199,14 @@ onMounted(async () => {
       p { font-size: 12px; color: $text-light; }
     }
   }
+}
+
+.more-btn {
+  text-align: center;
+  padding: 10px 0;
+  color: #c8102e;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .search-bar {
