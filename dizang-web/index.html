@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>净心 · 学佛导航</title>
+    <title>释迦网 · 佛教公益网站</title>
     <!-- 引入 Google Font 思源宋体 & 图标库 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -85,6 +85,12 @@
             align-items: center;
             justify-content: space-between;
         }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
         .logo {
             font-size: 1.5rem;
             font-weight: 900;
@@ -94,9 +100,13 @@
             align-items: center;
             gap: 8px;
         }
-        .logo i {
-            font-size: 1.4rem;
-            color: var(--gold);
+        .logo-mark {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
         .logo span {
             font-weight: 400;
@@ -104,6 +114,28 @@
             color: var(--text-soft);
             letter-spacing: 2px;
             margin-left: 4px;
+        }
+        .dev-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            padding: 2px 10px;
+            border: 1px solid var(--gold);
+            border-radius: 40px;
+            background: rgba(201, 169, 110, 0.14);
+            color: var(--gold-dark);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+        .dev-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-dark);
         }
 
         /* 桌面导航 */
@@ -725,10 +757,19 @@
             }
 
             .logo {
-                font-size: 1.2rem;
+                font-size: 1.45rem;
+            }
+            .logo-mark {
+                width: 48px;
+                height: 48px;
             }
             .logo span {
                 font-size: 0.7rem;
+            }
+            .dev-badge {
+                font-size: 0.65rem;
+                padding: 1px 8px;
+                letter-spacing: 0;
             }
 
             /* hero */
@@ -797,6 +838,29 @@
             .container {
                 padding: 0 16px;
             }
+            .navbar .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .brand {
+                gap: 4px;
+            }
+            .logo {
+                font-size: 1.4rem;
+                letter-spacing: 1px;
+                gap: 4px;
+            }
+            .logo-mark {
+                width: 46px;
+                height: 46px;
+            }
+            .logo span {
+                letter-spacing: 0;
+                margin-left: 2px;
+            }
+            .dev-badge {
+                padding: 1px 4px;
+            }
             .classic-grid {
                 grid-template-columns: 1fr;
             }
@@ -864,10 +928,13 @@
     <!-- ===== 导航栏 ===== -->
     <nav class="navbar" id="navbar">
         <div class="container">
-            <a href="#" class="logo">
-                <i class="fas fa-om"></i> 净心
-                <span>· 学佛导航</span>
-            </a>
+            <div class="brand">
+                <a href="#" class="logo">
+                    <img class="logo-mark" src="/buddha-logo.jpg?v=2" alt="" /> 释迦网
+                    <span>佛教公益网站</span>
+                </a>
+                <span class="dev-badge">网站正在开发中</span>
+            </div>
             <button class="hamburger" id="hamburger" aria-label="菜单">
                 <span></span><span></span><span></span>
             </button>
@@ -1188,7 +1255,7 @@
     <footer class="footer">
         <div class="container">
             <div class="copy">
-                <i class="fas fa-om"></i> 净心 · 学佛导航 &nbsp;|&nbsp; 愿一切众生 共成佛道
+                <i class="fas fa-om"></i> 释迦网 · 佛教公益网站 &nbsp;|&nbsp; 愿一切众生 共成佛道
             </div>
             <div class="links">
                 <a href="#classics">经典</a>
